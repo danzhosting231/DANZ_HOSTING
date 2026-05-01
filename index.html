@@ -1,0 +1,304 @@
+# danzz.html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <title>JASTEB STORE - Bayar DANA + Kirim Bukti</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #0a0a2e, #1a1a3e, #2a0a2e);
+            font-family: 'Poppins', 'Courier New', monospace;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 25px 20px;
+            border: 2px solid transparent;
+            animation: borderGlow 3s infinite;
+        }
+        @keyframes borderGlow {
+            0% { border-color: #ff00cc; }
+            50% { border-color: #00ffff; }
+            100% { border-color: #ffcc00; }
+        }
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, #ff00cc, #ffcc00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 28px;
+        }
+        .sub {
+            text-align: center;
+            color: #0ff;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: rgba(30,30,60,0.6);
+            border-radius: 28px;
+            padding: 18px;
+            margin: 16px 0;
+            border: 1px solid cyan;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffaa66;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        label {
+            font-size: 12px;
+            color: #0ff;
+            display: block;
+            margin-top: 8px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 6px 0;
+            background: #111;
+            color: #0f0;
+            border: 1px solid #ff00cc;
+            border-radius: 30px;
+            font-family: monospace;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(95deg, #ff416c, #ff4b2b);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: 0.2s;
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+        .dana-box {
+            background: #1a5a3a;
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .dana-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0f0;
+            letter-spacing: 2px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            color: #888;
+            margin-top: 20px;
+        }
+        .success-msg {
+            background: #0a3a0a;
+            padding: 10px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 10px;
+            color: #0f0;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🛒 JASTEB STORE</h1>
+    <div class="sub">⚡ Bayar pake DANA • Kirim Bukti Otomatis ⚡</div>
+
+    <!-- ========== PILIH PAKET ========== -->
+    <div class="card">
+        <div class="card-title">📦 PILIH PAKET</div>
+        <select id="paket">
+            <option value="JASTEB B AJA|5000">JASTEB B AJA - Rp5.000</option>
+            <option value="JASTEB RES BERISI VVIP|30000">JASTEB RES BERISI VVIP - Rp30.000</option>
+        </select>
+    </div>
+
+    <!-- ========== DATA PEMBELI ========== -->
+    <div class="card">
+        <div class="card-title">👤 DATA KAMU</div>
+        <label>Nama Lengkap</label>
+        <input type="text" id="nama" placeholder="Nama lo">
+        <label>Email / Gmail</label>
+        <input type="email" id="email" placeholder="contoh@gmail.com">
+        <label>Nomor WhatsApp Aktif</label>
+        <input type="tel" id="nomerWa" placeholder="628123456789">
+    </div>
+
+    <!-- ========== BAYAR PAKE DANA ========== -->
+    <div class="card">
+        <div class="card-title">💸 BAYAR KE DANA</div>
+        <div class="dana-box">
+            <div style="font-size:12px;">📲 KIRIM PEMBAYARAN KE NOMOR DANA:</div>
+            <div class="dana-number">08231966780</div>
+            <div style="font-size:11px; margin-top:5px;">Atas nama: ***JASTEB STORE***</div>
+        </div>
+        <label>Jumlah yang lo kirim (sesuai paket)</label>
+        <input type="text" id="jumlahBayar" placeholder="5000 atau 30000" readonly style="background:#222;">
+    </div>
+
+    <!-- ========== KIRIM BUKTI TF ========== -->
+    <div class="card">
+        <div class="card-title">📸 KIRIM BUKTI TRANSFER</div>
+        <label>Upload Bukti (Screenshot/Foto)</label>
+        <input type="file" id="buktiFile" accept="image/*">
+        <label>Atau masukkan link bukti (google drive/imgur)</label>
+        <input type="text" id="linkBukti" placeholder="https://..." oninput="toggleFileInput()">
+        <button id="kirimBuktiBtn">📤 KIRIM BUKTI KE OWNER</button>
+        <div id="statusBukti" class="success-msg" style="display:none;"></div>
+    </div>
+
+    <!-- ========== KIRIM EMAIL/GMAIL KE WA ========== -->
+    <div class="card">
+        <div class="card-title">📧 KIRIM EMAIL KAMU KE WHATSAPP OWNER</div>
+        <button id="kirimEmailBtn">📨 KIRIM EMAIL SAYA KE OWNER</button>
+        <div id="statusEmail" class="success-msg" style="display:none;"></div>
+    </div>
+
+    <div class="footer">
+        ✅ Setelah kirim bukti, pesanan akan diproses dalam 5 menit.<br>
+        📌 Pastikan nomor WA lo aktif untuk dikonfirmasi.
+    </div>
+</div>
+
+<script>
+    // Set jumlah bayar otomatis sesuai paket
+    const paketSelect = document.getElementById('paket');
+    const jumlahBayarInput = document.getElementById('jumlahBayar');
+
+    function updateHarga() {
+        const selected = paketSelect.value;
+        const harga = selected.split('|')[1];
+        jumlahBayarInput.value = `Rp${parseInt(harga).toLocaleString()}`;
+    }
+    paketSelect.addEventListener('change', updateHarga);
+    updateHarga();
+
+    // Fungsi kirim ke WhatsApp
+    function sendToWhatsApp(phoneNumber, message) {
+        let cleanPhone = phoneNumber.replace(/\D/g, '');
+        if (!cleanPhone.startsWith('62')) {
+            if (cleanPhone.startsWith('0')) {
+                cleanPhone = '62' + cleanPhone.substring(1);
+            } else if (cleanPhone.startsWith('8')) {
+                cleanPhone = '62' + cleanPhone;
+            } else if (cleanPhone.startsWith('628')) {
+                cleanPhone = '62' + cleanPhone;
+            }
+        }
+        const waLink = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+        window.open(waLink, '_blank');
+    }
+
+    // ========== KIRIM BUKTI TF ==========
+    async function sendBukti() {
+        const nama = document.getElementById('nama').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const noWa = document.getElementById('nomerWa').value.trim();
+        const paket = paketSelect.value.split('|')[0];
+        const harga = paketSelect.value.split('|')[1];
+        const fileInput = document.getElementById('buktiFile');
+        const linkBukti = document.getElementById('linkBukti').value.trim();
+
+        if (!nama || !email || !noWa) {
+            alert('❌ Isi nama, email, dan nomor WA lo dulu, goblok!');
+            return;
+        }
+
+        let buktiUrl = '';
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                buktiUrl = e.target.result;
+                sendMessage(buktiUrl);
+            };
+            reader.readAsDataURL(file);
+        } else if (linkBukti) {
+            buktiUrl = linkBukti;
+            sendMessage(buktiUrl);
+        } else {
+            alert('❌ Upload bukti transfer atau masukkan link bukti ya, goblok!');
+            return;
+        }
+
+        function sendMessage(bukti) {
+            const message = `🔔 *BUKTI TRANSFER MASUK* 🔔%0A%0A` +
+                `👤 Nama: ${nama}%0A` +
+                `📧 Email: ${email}%0A` +
+                `📱 No WA: ${noWa}%0A` +
+                `📦 Paket: ${paket}%0A` +
+                `💰 Harga: Rp${parseInt(harga).toLocaleString()}%0A` +
+                `🖼️ Bukti Transfer: ${bukti.substring(0, 200)}%0A%0A` +
+                `✅ Segera proses pesanan ini. Terima kasih!`;
+
+            sendToWhatsApp('082319667803', message);
+            const statusDiv = document.getElementById('statusBukti');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '✅ Bukti transfer berhasil dikirim ke Owner! Pesanan akan diproses.';
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+    }
+
+    document.getElementById('kirimBuktiBtn').addEventListener('click', sendBukti);
+
+    // ========== KIRIM EMAIL KE WA OWNER ==========
+    function kirimEmailKeOwner() {
+        const nama = document.getElementById('nama').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const noWa = document.getElementById('nomerWa').value.trim();
+
+        if (!nama || !email || !noWa) {
+            alert('❌ Isi nama, email, dan nomor WA lo dulu!');
+            return;
+        }
+
+        const message = `📧 *DATA EMAIL PELANGGAN* 📧%0A%0A` +
+            `👤 Nama: ${nama}%0A` +
+            `📧 Email/Gmail: ${email}%0A` +
+            `📱 No WhatsApp: ${noWa}%0A%0A` +
+            `💬 Ini email dari pelanggan yang ingin order. Simpan data ini ya, Owner!`;
+
+        sendToWhatsApp('6282364301965', message);
+        
+        const statusDiv = document.getElementById('statusEmail');
+        statusDiv.style.display = 'block';
+        statusDiv.innerHTML = '✅ Email lo berhasil dikirim ke Owner! Owner akan menghubungi lo segera.';
+        setTimeout(() => {
+            statusDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    document.getElementById('kirimEmailBtn').addEventListener('click', kirimEmailKeOwner);
+
+    function toggleFileInput() {
+        // optional, biar link dulu yang dipake kalo ada
+    }
+</script>
+</body>
+                </html>
